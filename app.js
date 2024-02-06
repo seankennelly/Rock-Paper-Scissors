@@ -1,9 +1,54 @@
-const playOptions = ["Rock", "Paper", "Scissors"];
+// --------------- PAGE ELEMENTS -------------------
+const main = document.getElementsByTagName('main');
+const optionsContainer = document.querySelector('.options');
+const resultsContainer = document.querySelector('.results-container');
+// const resultsList = document.querySelector('.round-results');
+const totalsContainer = document.querySelector('.game-totals');
 
+const playOptions = [
+  {
+    name: "Rock",
+    imgSrc: "rock.png"
+  },
+  {
+    name: "Paper",
+    imgSrc: "paper.png"
+  },
+  {
+    name: "Scissors",
+    imgSrc: "scissors.png"
+  },
+];
+
+// LOOP TO CREATE OPTIONS
+for (let option of playOptions) {
+  // CREATE ELEMENTS
+  const optionsBox = document.createElement('div');
+  const optionImg = document.createElement('img');
+  const optionPara = document.createElement('p');
+  // IMAGE DETAILS
+  optionImg.src = `./assets/${option.imgSrc}`;
+  optionImg.alt = `An emoji representation of ${option.name}`;
+  optionsBox.append(optionImg);
+  // TEXT DETAILS
+  optionPara.innerText = option.name;
+  optionsBox.append(optionPara);
+  optionsBox.setAttribute('class', 'optionsBox');
+  optionsBox.setAttribute('id', option.name);
+  // ADD TO PAGE
+  optionsContainer.append(optionsBox);
+}
+// SELECT OPTION ELEMENT DIVS
+const rockDiv = document.getElementById('Rock');
+const paperDiv = document.getElementById('Paper');
+const scissorsDiv = document.getElementById('Scissors');
+
+// ------------ GAME MECHANICS ----------------------------
+// RANDOM COMPUTER CHOICE
 const computerPlay = () => {
-  return playOptions[Math.floor(Math.random() * 3)];
+  return playOptions[Math.floor(Math.random() * 3)].name;
 };
-
+// PLAY ROUND
 const playRound = (playerSelection, computerSelection) => {
   const selection = playerSelection;
   if (selection === computerSelection) {
@@ -19,66 +64,130 @@ const playRound = (playerSelection, computerSelection) => {
     return { result: 'win', msg: `You win! Your ${selection} beats the computer's ${computerSelection}!` }
   };
 };
+// PLAY GAME
+let roundNum = 0;
+let playerScore = 0;
+let computerScore = 0;
+let result = '';
+let listAlreadyExists = false;
 
-const game = () => {
-  let playerScore = 0;
-  let computerScore = 0;
-  let totalScore = '';
+const game = (selection) => {
+  const playerSelection = selection;
+  const computerSelection = computerPlay();
+  const resultListItem = document.createElement('li');
+  const finalResultListItem = document.createElement('li');
 
-  outerLoop: for (let i = 1; i < 6; i++) {
-    let userInput = prompt("Please enter either 'Rock', 'Paper', or 'Scissors'. Or type 'Quit' at any time to quit.").toLowerCase();
-    // CHECKS IF USER HAS ENTERED SOMETHING
-    while (userInput === null || userInput.trim() === "") {
-      userInput = prompt("Enter either 'Rock', 'Paper', or 'Scissors'. Or type 'Quit' at any time to quit.").toLowerCase();
-    };
-    // FORMATS INPUT
-    let formattedInput = userInput[0].toUpperCase() + userInput.slice(1);
-    let playerSelection = '';
-    // ALLOWS USER TO QUIT FROM MAIN PROMPT
-    if (formattedInput === 'Quit') {
-      console.log("See you next time");
-      break;
-    } else {
-      // PROMPT FOR INCORRECT INPUT
-      while (!playOptions.includes(formattedInput)) {
-        userInput = prompt("Sorry, you can only enter 'Rock', 'Paper', or 'Scissors'! (Or 'Quit' to leave the game)").toLowerCase();
-        // NESTED CHECK FOR EMPTY PROMPT
-        while (userInput === null || userInput.trim() === "") {
-          userInput = prompt("You must enter 'Rock', 'Paper', or 'Scissors'. Or type 'Quit' at any time to quit.").toLowerCase();
-        };
-        formattedInput = userInput[0].toUpperCase() + userInput.slice(1);
-        // ALLOWS USER TO QUIT FROM SECONDARY PROMPT
-        if (formattedInput === 'Quit') {
-          console.log("See you next time");
-          break outerLoop;
-        };
-      };
-      // Player & Computer selections confirmed
-      playerSelection = formattedInput;
-      const computerSelection = computerPlay();
-      // Round played & scores altered (unless draw)
-      const round = playRound(playerSelection, computerSelection);
-      if (round.result === 'loss') {
-        computerScore++;
-      } else if (round.result === 'win') {
-        playerScore++;
-      };
-      console.log(`Round ${i}: ${round.msg}`);
+  const round = playRound(playerSelection, computerSelection);
+  roundNum++;
+  if (round.result === 'loss') {
+    computerScore++;
+    resultListItem.setAttribute('class', 'loss');
+  } else if (round.result === 'win') {
+    playerScore++;
+    resultListItem.setAttribute('class', 'win');
+  };
+
+  function createResultsList() {
+    return function () {
+      if (!listAlreadyExists) {
+        const resultsList = document.createElement('ul');
+        resultsList.setAttribute('class', 'round-results');
+        listAlreadyExists = true;
+      }
     }
   };
-  // Final score output
-  if (computerScore > playerScore) {
-    totalScore = "Sorry, you lost."
-  } else if (computerScore < playerScore) {
-    totalScore = "You won!";
-  } else if (computerScore === playerScore) {
-    totalScore = "Overall it was a draw.";
+
+  const checkIfResultListExists = createResultsList();
+  resultListItem.innerText = `Round ${roundNum}: ${round.msg}`
+  resultsList.append(resultListItem);
+  resultsContainer.append(resultsList);
+
+
+  if (roundNum >= 5) {
+    // Final score output
+    if (computerScore > playerScore) {
+      result = "Sorry, you lost.";
+      finalResultListItem.setAttribute('class', 'loss');
+    } else if (computerScore < playerScore) {
+      result = "You won!";
+      finalResultListItem.setAttribute('class', 'win');
+    } else if (computerScore === playerScore) {
+      result = "Overall it was a draw.";
+    };
+
+    // CREATE TOTAL SCORE HEADING, LIST, LIST ITEMS AND ADDS TO DOM
+    const h2 = document.createElement('h2');
+    h2.innerText = 'Total Scores';
+
+    const totalUl = document.createElement('ul');
+
+    const computerScoreLi = document.createElement('li');
+    computerScoreLi.innerText = `Computer Score = ${computerScore}`;
+
+    const playerScoreLi = document.createElement('li');
+    playerScoreLi.innerText = `Player Score = ${playerScore}`;
+
+    finalResultListItem.innerText = `Result: ${result}`;
+
+    resultsContainer.setAttribute('style', 'justify-content: space-between',);
+    totalsContainer.setAttribute('style', 'width: 250px',);
+    totalUl.append(computerScoreLi, playerScoreLi, finalResultListItem);
+    totalsContainer.append(h2, totalUl);
   };
-  console.log(`TOTAL SCORES: 
-              Computer Score = ${computerScore}
-              Player Score = ${playerScore}
-              Result: ${totalScore}`
-  );
+
+  console.log(roundNum);
+  console.log(playerScore);
+  console.log(computerScore);
+  console.log(result);
 };
 
-game();
+// CREATE BUTTONS
+const restart = document.createElement('button');
+const quit = document.createElement('button');
+let buttonHasBeenCalled = false;
+function executeOnce() {
+  return function () {
+    if (!buttonHasBeenCalled) {
+      restart.innerText = 'Restart';
+      restart.setAttribute('class', 'restart');
+      resultsContainer.insertAdjacentElement('afterend', restart);
+      quit.innerText = 'Quit';
+      quit.setAttribute('class', 'quit');
+      restart.insertAdjacentElement('afterend', quit);
+      buttonHasBeenCalled = true;
+    }
+  }
+};
+const addButtons = executeOnce();
+
+// EVENT LISTENERS TO CALL GAME FUNCTION
+rockDiv.addEventListener('click', () => {
+  game('Rock');
+  addButtons();
+  checkIfResultListExists();
+})
+paperDiv.addEventListener('click', () => {
+  game('Paper');
+  addButtons();
+});
+scissorsDiv.addEventListener('click', () => {
+  game('Scissors');
+  addButtons();
+});
+
+// RESTART & QUIT BUTTON FUNCTIONS
+restart.addEventListener('click', () => {
+  roundNum = 0;
+  playerScore = 0;
+  computerScore = 0;
+  result = '';
+  resultsList.remove();
+  restart.remove();
+  quit.remove();
+  buttonHasBeenCalled = false;
+});
+
+
+// Close game after 5!
+
+//dsfsdgsdgsgdfsgdfgdfgdfgdfgfdgfgdf

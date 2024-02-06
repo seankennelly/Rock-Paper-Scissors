@@ -1,0 +1,142 @@
+@font-face {
+  font-family: 'Protest Riot';
+  src: url(../assets/font/ProtestRiot-Regular.ttf);
+}
+
+body {
+  margin: 0;
+  font-family: 'Protest Riot';
+  background-color: #7FB1B3;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto 0;
+}
+
+h1 {
+  margin: 3rem auto;
+  text-align: center;
+}
+
+.options {
+  display: flex;
+  justify-content: space-around;
+}
+
+.optionsBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  font-size: 1.5rem;
+  background-color: #5f9ea0;
+  border: wheat 2px dashed;
+  border-radius: 5px;
+}
+
+.optionsBox:hover {
+  background-color: #77c3c7;
+}
+
+.optionsBox img {
+  width: 80%;
+}
+
+.optionsBox p {
+  margin: 1rem;
+}
+
+.results-container {
+  display: flex;
+  justify-content: center;
+  /* JS script changes to 'Space-Between' when Totals Container is added. (Inline style) */
+  width: 670px;
+  margin: 2rem auto 0;
+  background-color: rgba(255, 255, 255, 0.549);
+  border-radius: 5px;
+}
+
+ul.round-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.round-results li {
+  margin: 0.75rem;
+  font-size: 1rem;
+}
+
+.round-results li:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.round-results li:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.win {
+  color: green;
+}
+
+.loss {
+  color: #a34c49;
+}
+
+.game-totals {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.835);
+  border-radius: 0 5px 5px 0;
+}
+
+.game-totals li {
+  font-size: 1.25rem;
+  margin: 0.75rem 0;
+}
+
+button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  margin: 1rem auto 0;
+  padding: 0.5rem;
+  font-family: 'Protest Riot';
+  font-size: 1rem;
+  color: whitesmoke;
+  background-color: #a0615f;
+  border: none;
+}
+
+.restart {
+  background-color: #5FA061;
+}
+
+.quit {
+  margin-bottom: 3rem;
+}
+
+button.restart:hover {
+  background-color: #558e57;
+  ;
+}
+
+button.quit:hover {
+  background-color: #a34c49;
+}
