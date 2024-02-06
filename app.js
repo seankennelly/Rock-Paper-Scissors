@@ -2,8 +2,10 @@
 const main = document.getElementsByTagName('main');
 const optionsContainer = document.querySelector('.options');
 const resultsContainer = document.querySelector('.results-container');
-// const resultsList = document.querySelector('.round-results');
-const totalsContainer = document.querySelector('.game-totals');
+const gameOverScreen = document.querySelector('.game-over-container');
+const reloadButton = document.querySelector('.reload');
+let resultsList = '';
+let totalsContainer = '';
 
 const playOptions = [
   {
@@ -64,6 +66,7 @@ const playRound = (playerSelection, computerSelection) => {
     return { result: 'win', msg: `You win! Your ${selection} beats the computer's ${computerSelection}!` }
   };
 };
+
 // PLAY GAME
 let roundNum = 0;
 let playerScore = 0;
@@ -77,6 +80,7 @@ const game = (selection) => {
   const resultListItem = document.createElement('li');
   const finalResultListItem = document.createElement('li');
 
+  // PLAYS ROUND OF ROCK PAPER SCISSORS
   const round = playRound(playerSelection, computerSelection);
   roundNum++;
   if (round.result === 'loss') {
@@ -87,22 +91,23 @@ const game = (selection) => {
     resultListItem.setAttribute('class', 'win');
   };
 
-  function createResultsList() {
-    return function () {
-      if (!listAlreadyExists) {
-        const resultsList = document.createElement('ul');
-        resultsList.setAttribute('class', 'round-results');
-        listAlreadyExists = true;
-      }
-    }
+  // CHECKS IF RESULT LIST EXISTS (OR HAS BEEN DELETED BY BUTTONS)
+  if (!resultsList) {
+    resultsList = document.createElement('ul');
+    resultsList.setAttribute('class', 'round-results');
   };
 
-  const checkIfResultListExists = createResultsList();
+  if (!totalsContainer) {
+    totalsContainer = document.createElement('div');
+    totalsContainer.setAttribute('class', 'game-totals');
+  };
+
+  // POPULATES LIST WITH ROUND SCORE
   resultListItem.innerText = `Round ${roundNum}: ${round.msg}`
   resultsList.append(resultListItem);
   resultsContainer.append(resultsList);
 
-
+  // CHECK IF FIVE ROUND HAVE BEEN PLAYED, GIVE RESULT
   if (roundNum >= 5) {
     // Final score output
     if (computerScore > playerScore) {
@@ -118,42 +123,39 @@ const game = (selection) => {
     // CREATE TOTAL SCORE HEADING, LIST, LIST ITEMS AND ADDS TO DOM
     const h2 = document.createElement('h2');
     h2.innerText = 'Total Scores';
-
     const totalUl = document.createElement('ul');
-
     const computerScoreLi = document.createElement('li');
     computerScoreLi.innerText = `Computer Score = ${computerScore}`;
-
     const playerScoreLi = document.createElement('li');
     playerScoreLi.innerText = `Player Score = ${playerScore}`;
-
     finalResultListItem.innerText = `Result: ${result}`;
-
     resultsContainer.setAttribute('style', 'justify-content: space-between',);
     totalsContainer.setAttribute('style', 'width: 250px',);
     totalUl.append(computerScoreLi, playerScoreLi, finalResultListItem);
     totalsContainer.append(h2, totalUl);
+    resultsList.insertAdjacentElement('afterend', totalsContainer);
   };
 
-  console.log(roundNum);
+  // FOR TESTING - TO BE DELETED
+  console.log('ROUNDNUM:' + roundNum);
   console.log(playerScore);
   console.log(computerScore);
   console.log(result);
 };
 
 // CREATE BUTTONS
-const restart = document.createElement('button');
+const restartButton = document.createElement('button');
 const quit = document.createElement('button');
 let buttonHasBeenCalled = false;
 function executeOnce() {
   return function () {
     if (!buttonHasBeenCalled) {
-      restart.innerText = 'Restart';
-      restart.setAttribute('class', 'restart');
-      resultsContainer.insertAdjacentElement('afterend', restart);
+      restartButton.innerText = 'Restart';
+      restartButton.setAttribute('class', 'restart');
+      resultsContainer.insertAdjacentElement('afterend', restartButton);
       quit.innerText = 'Quit';
       quit.setAttribute('class', 'quit');
-      restart.insertAdjacentElement('afterend', quit);
+      restartButton.insertAdjacentElement('afterend', quit);
       buttonHasBeenCalled = true;
     }
   }
@@ -164,7 +166,7 @@ const addButtons = executeOnce();
 rockDiv.addEventListener('click', () => {
   game('Rock');
   addButtons();
-  checkIfResultListExists();
+  // checkIfResultListExists();
 })
 paperDiv.addEventListener('click', () => {
   game('Paper');
@@ -176,18 +178,26 @@ scissorsDiv.addEventListener('click', () => {
 });
 
 // RESTART & QUIT BUTTON FUNCTIONS
-restart.addEventListener('click', () => {
+restartButton.addEventListener('click', () => {
   roundNum = 0;
   playerScore = 0;
   computerScore = 0;
   result = '';
+  while(resultsList.firstChild) {resultsList.firstChild.remove()};
   resultsList.remove();
-  restart.remove();
+  while(totalsContainer.firstChild) {totalsContainer.firstChild.remove()};
+  totalsContainer.remove();
+  restartButton.remove();
   quit.remove();
   buttonHasBeenCalled = false;
+  console.log("ROUND NUM AFTER RESTART:" + roundNum)
 });
+
+quit.addEventListener('click', () => {
+
+});
+
+reloadButton.addEventListener()
 
 
 // Close game after 5!
-
-//dsfsdgsdgsgdfsgdfgdfgdfgdfgfdgfgdf
