@@ -1,6 +1,13 @@
+/* PAGE STANDARDS */
 @font-face {
   font-family: 'Protest Riot';
   src: url(../assets/font/ProtestRiot-Regular.ttf);
+}
+
+html {
+  /* Always includes space for scrollbar in browser window.
+  Otherwise when gameplay introduces new content scrollbar appears and page content shifts */
+  overflow-y: scroll;
 }
 
 body {
@@ -17,16 +24,41 @@ li {
   list-style: none;
 }
 
+button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  margin: 1rem auto 0;
+  padding: 0.5rem;
+  font-family: 'Protest Riot';
+  font-size: 1rem;
+  color: whitesmoke;
+  background-color: #5FA061;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* PAGE CSS */
 main {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 85%;
   margin: 0 auto 0;
 }
 
-h1 {
-  margin: 3rem auto;
+.intro {
+  margin: 2rem auto;
   text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+.intro p {
+  font-size: 1.1rem;
 }
 
 .options {
@@ -43,6 +75,7 @@ h1 {
   background-color: #5f9ea0;
   border: wheat 2px dashed;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .optionsBox:hover {
@@ -59,7 +92,7 @@ h1 {
 
 .results-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   /* JS script changes to 'Space-Between' when Totals Container is added. (Inline style) */
   width: 670px;
   margin: 2rem auto 0;
@@ -71,7 +104,6 @@ ul.round-results {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  order: 1;
   margin: 0;
   padding: 0;
   text-align: left;
@@ -102,28 +134,18 @@ ul.round-results {
   display: flex;
   flex-direction: column;
   align-items: center;
-  order: 2;
   background-color: rgba(255, 255, 255, 0.835);
   border-radius: 0 5px 5px 0;
+}
+
+.game-totals ul {
+  width: 90%;
+  text-align: center;
 }
 
 .game-totals li {
   font-size: 1.25rem;
   margin: 0.75rem 0;
-}
-
-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
-  margin: 1rem auto 0;
-  padding: 0.5rem;
-  font-family: 'Protest Riot';
-  font-size: 1rem;
-  color: whitesmoke;
-  background-color: #5FA061;
-  border: none;
 }
 
 .quit {
@@ -142,15 +164,17 @@ button.quit:hover {
 
 .game-over-container {
   display: none;
-  /* display: flex; */
-  justify-content: center;
   align-items: center;
   position: absolute;
-  width: 80%;
+  width: 85%;
   height: 80%;
-  background-color: grey;
+  margin: 0 auto 0;
   border-radius: 5px;
   background-color: rgba(128, 128, 128, 0.683);
+}
+
+.toggle-hidden {
+  display: flex;
 }
 
 .game-over-content {
@@ -160,4 +184,18 @@ button.quit:hover {
   text-align: center;
   background-color: #7FB1B3;
   border-radius: 5px;
+}
+
+.game-over-content button {
+  margin: 0 1rem 0;
+}
+
+.disabled {
+  cursor: default;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.disabled:hover {
+  background-color: #5f9ea0;
 }

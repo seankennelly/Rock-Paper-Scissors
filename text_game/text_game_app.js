@@ -26,7 +26,7 @@ const game = () => {
   let totalScore = '';
 
   outerLoop: for (let i = 1; i < 6; i++) {
-    let userInput = input.value.toLowerCase();
+    let userInput = prompt("Please enter either 'Rock', 'Paper', or 'Scissors'. Or type 'Quit' at any time to quit.").toLowerCase();
     // CHECKS IF USER HAS ENTERED SOMETHING
     while (userInput === null || userInput.trim() === "") {
       userInput = prompt("Enter either 'Rock', 'Paper', or 'Scissors'. Or type 'Quit' at any time to quit.").toLowerCase();
