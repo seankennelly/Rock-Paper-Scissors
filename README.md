@@ -1,5 +1,5 @@
 # Rock Paper Scissors Game
-https://seankennelly.github.io/Rock-Paper-Scissors/
+https://seankennelly.github.io/Rock_Paper_Scissors/
 
 ## The Game
 The game is simply Rock, Paper, Scissors. The user can win, lose or draw on each round. After five rounds the scores are added up. Due to the potential for draws in rounds, the final score can also be a win, loss or draw. This is a simple and intuitive version of a classic game.
